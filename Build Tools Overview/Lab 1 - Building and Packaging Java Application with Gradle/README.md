@@ -92,6 +92,7 @@ calculator-gradle/
 │       └── calculator.jar
 ├── src/
 ├── build.gradle
+├── settings.gradle
 └── README.md
 ```
 
