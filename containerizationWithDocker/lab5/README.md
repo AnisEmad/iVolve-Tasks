@@ -115,6 +115,11 @@ docker rm container3
 ```
 ![stop and remove container](screenshots/stop_remove.png)
 
+### 7. Delete the image
+```bash
+docker rmi app3
+```
+![remove image](screenshots/remove_image.png)
 ## Project Structure
 ```
 Docker-1/
