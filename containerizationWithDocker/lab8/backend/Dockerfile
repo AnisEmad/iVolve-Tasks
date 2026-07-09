@@ -1,9 +1,8 @@
-FROM python:3.13-alpine
+FROM python:3.13
 
 WORKDIR /app
 
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-
+RUN groupadd -r appgroup && useradd -r -g appgroup appuser
 COPY . .
 
 RUN pip install flask
