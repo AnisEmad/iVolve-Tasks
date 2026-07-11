@@ -113,9 +113,7 @@ docker exec frontend2 curl -s http://backend:5000
 ![frontend2 to backend failure](screenshots/frontend2_to_backend.png)
 
 The second command should fail to resolve/connect, since `frontend2` and
-`backend` aren't on the same network and the default bridge network doesn't
-provide automatic name resolution between containers the way a custom network
-does.
+`backend` aren't on the same network. so `frontend2` can't resolve `backend` because it doesn't have a container named backend in its network.
 
 ### 8. Delete the network
 ```bash
