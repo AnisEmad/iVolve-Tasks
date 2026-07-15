@@ -57,7 +57,7 @@ kubectl taint nodes <node-name> node=worker:NoSchedule
 ```bash
 kubectl describe nodes
 ```
-
+![describe nodes](screenshots/describe_nodes.png)
 
 Look for the `Taints:` field in the output — the tainted node should show:
 ```
