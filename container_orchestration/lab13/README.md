@@ -107,7 +107,7 @@ kubectl exec pvc-test-pod -- cat /app-logs/test.log
 
 
 
-### 4. Clean up the test pod (keep the PV/PVC for Lab 14)
+### 4. Clean up the test pod 
 ```bash
 kubectl delete pod pvc-test-pod
 ```
