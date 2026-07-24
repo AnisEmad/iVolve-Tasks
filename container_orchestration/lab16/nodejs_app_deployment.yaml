@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-app
+  labels:
+    app: nodejs
+  namespace: ivolve
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:
+      tolerations:
+        - key: "node"
+          operator: "Equal"
+          value: "worker"
+          effect: "NoSchedule"
+      initContainers:
+        - name: init-mysql-setup
+          image: mysql:8
+          env:
+            - name: ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_ROOT_PASSWORD
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: DB_HOST
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: DB_USER
+          command:
+            - /bin/sh 
+            - -c 
+            - |
+              mysql -h"$DB_HOST" -u root -p"$ROOT_PASSWORD" -e "CREATE DATABASE IF NOT EXISTS \`ivolve\`;"
+              mysql -h"$DB_HOST" -u root -p"$ROOT_PASSWORD" -e "GRANT ALL PRIVILEGES ON \`ivolve\`.* TO '$DB_USER'@'%';"
+              mysql -h"$DB_HOST" -u root -p"$ROOT_PASSWORD" -e "FLUSH PRIVILEGES;" 
+      containers:
+      - name: my-nodejs-app
+        image: yansoon10/lab9-app
+        ports:
+          - containerPort: 3000
+        env:
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-config
+                key: DB_HOST
+          - name: DB_USER
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-config
+                key: DB_USER
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: DB_PASSWORD
+        volumeMounts:
+          - name: app-logs
+            mountPath: /app/logs
+      volumes:
+        - name: app-logs
+          persistentVolumeClaim:
+            claimName: app-logs-pvc
