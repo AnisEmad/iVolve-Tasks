@@ -98,12 +98,7 @@ Returns Prometheus-formatted metrics output.
 lab19/
 │
 ├── daemonset.yaml
-├── README.md
-└── screenshots/
-    ├── create_namespace.png
-    ├── daemonset_apply.png
-    ├── verfiy_node_exporter.png
-    └── curl_metrics.png
+└── README.md
 ```
 
 ## Result
